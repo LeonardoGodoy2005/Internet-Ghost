@@ -1,0 +1,15 @@
+{
+  "name": "internet-ghosts",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.3.1",
+    "fastify": "^5.12.7"
+  }
+}

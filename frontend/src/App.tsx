@@ -28,7 +28,7 @@ interface RespostaApi {
 }
 
 const URL_API =
-  import.meta.env.VITE_API_URL || 'http://localhost:3333/api/fantasmas'
+  import.meta.env.VITE_API_URL || '/api/fantasmas'
 
 function carimbo(valor: string): string {
   const numeros = valor.replace(/\D/g, '')
