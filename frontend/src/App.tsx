@@ -589,9 +589,11 @@ export default function App() {
     limparComparacao()
 
     try {
-      const resposta = await fetch(
-        `${URL_API}/${encodeURIComponent(dominioLimpo)}`,
-      )
+      const separador = URL_API.includes('?') ? '&' : '?'
+
+const resposta = await fetch(
+  `${URL_API}${separador}dominio=${encodeURIComponent(dominioLimpo)}`,
+)
 
       if (!resposta.ok) {
         if (resposta.status === 404) {
@@ -616,7 +618,7 @@ export default function App() {
     } catch (falha) {
       setErro(
         falha instanceof TypeError
-          ? 'Não foi possível conectar à API. Confira se o backend está rodando na porta 3333.'
+          ? 'Não foi possível conectar ao serviço de investigação. Tente novamente em instantes.'
           : falha instanceof Error
             ? falha.message
             : 'Não foi possível concluir a investigação.',
