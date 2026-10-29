@@ -27,8 +27,7 @@ interface RespostaApi {
   [chave: string]: unknown
 }
 
-const URL_API =
-  import.meta.env.VITE_API_URL || '/api/fantasmas'
+const URL_API = import.meta.env.VITE_API_URL || '/api/fantasmas'
 
 function carimbo(valor: string): string {
   const numeros = valor.replace(/\D/g, '')
@@ -566,6 +565,7 @@ export default function App() {
     return `https://web.archive.org/web/${captura}/${encodeURIComponent(dominioAtual)}`
   }
 
+  /* Investigação do domínio com tempo limite e tratamento de erros */
   async function pesquisarFantasma(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault()
 
@@ -588,16 +588,36 @@ export default function App() {
     setLimiteCapturas(7)
     limparComparacao()
 
+    const controlador = new AbortController()
+
+    const tempoLimite = window.setTimeout(() => {
+      controlador.abort()
+    }, 45000)
+
     try {
       const separador = URL_API.includes('?') ? '&' : '?'
 
-const resposta = await fetch(
-  `${URL_API}${separador}dominio=${encodeURIComponent(dominioLimpo)}`,
-)
+      const enderecoApi =
+        `${URL_API}${separador}dominio=${encodeURIComponent(dominioLimpo)}`
+
+      console.log('[Internet Fantasma] Investigando:', dominioLimpo)
+      console.log('[Internet Fantasma] URL da API:', enderecoApi)
+
+      const resposta = await fetch(enderecoApi, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+        signal: controlador.signal,
+      })
+
+      console.log('[Internet Fantasma] Status da API:', resposta.status)
 
       if (!resposta.ok) {
         if (resposta.status === 404) {
-          throw new Error('Não encontramos registros para esse domínio.')
+          throw new Error(
+            'Não encontramos registros para esse domínio.',
+          )
         }
 
         if (resposta.status === 429) {
@@ -613,17 +633,41 @@ const resposta = await fetch(
 
       const dados = (await resposta.json()) as RespostaApi
 
-      setFantasma(normalizarResposta(dados, dominioLimpo))
+      console.log('[Internet Fantasma] Dados recebidos:', dados)
+
+      const resultado = normalizarResposta(dados, dominioLimpo)
+
+      if (
+        resultado.capturas.length === 0 &&
+        resultado.totalCapturas === 0
+      ) {
+        throw new Error(
+          'A consulta terminou, mas não encontramos capturas históricas para esse domínio.',
+        )
+      }
+
+      setFantasma(resultado)
       setDominio(dominioLimpo)
     } catch (falha) {
-      setErro(
-        falha instanceof TypeError
-          ? 'Não foi possível conectar ao serviço de investigação. Tente novamente em instantes.'
-          : falha instanceof Error
+      console.error('[Internet Fantasma] Erro na investigação:', falha)
+
+      if (falha instanceof Error && falha.name === 'AbortError') {
+        setErro(
+          'A consulta demorou mais de 45 segundos. A Wayback Machine pode estar lenta; tente novamente.',
+        )
+      } else if (falha instanceof TypeError) {
+        setErro(
+          'Não foi possível conectar ao serviço de investigação. Verifique sua conexão e tente novamente.',
+        )
+      } else {
+        setErro(
+          falha instanceof Error
             ? falha.message
             : 'Não foi possível concluir a investigação.',
-      )
+        )
+      }
     } finally {
+      window.clearTimeout(tempoLimite)
       setCarregando(false)
     }
   }
