@@ -10,7 +10,8 @@ servidor.register(fantasmaRotas)
 servidor.get('/api/debug', async (requisicao) => ({
   funcionando: true,
   caminho: requisicao.url,
-  metodo: requisicao.method
+  metodo: requisicao.method,
+  rotas: servidor.printRoutes()
 }))
 
 export default async function handler(
