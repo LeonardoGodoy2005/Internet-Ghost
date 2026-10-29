@@ -447,7 +447,7 @@ function ArteHolografica({
 }
 
 export default function App() {
-  const [dominio, setDominio] = useState('google.com')
+  const [dominio, setDominio] = useState('')
   const [fantasma, setFantasma] = useState<Fantasma | null>(null)
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
