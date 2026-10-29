@@ -1,7 +1,7 @@
 
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
-import { fantasmaRotas } from '../backend/src/rotas/fantasmaRotas'
+import { fantasmaRotas } from '../backend/src/rotas/fantasmaRotas.js'
 
 const servidor = Fastify({
   logger: true

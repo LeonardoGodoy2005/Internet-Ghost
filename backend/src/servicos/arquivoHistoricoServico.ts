@@ -225,9 +225,9 @@ export async function buscarHistorico(
   const primeiraData = todasCapturas[0] ?? primeiraCaptura
 
   const ultimaData =
-    [...capturasRecentes].sort().at(-1) ??
-    [...todasCapturas].sort().at(-1) ??
-    null
+  [...capturasRecentes].sort().pop() ??
+  [...todasCapturas].sort().pop() ??
+  null
 
   if (!ultimaData) {
     throw new Error('Não foi possível identificar a última captura.')
