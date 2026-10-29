@@ -1,4 +1,4 @@
-# 👻 Internet Ghost
+# 👻 Internet Ghosts
 
 **Uma internet esqueceu. Nós encontramos.**
 
@@ -16,9 +16,9 @@ Uma plataforma de arqueologia digital que investiga o passado de domínios da in
 
 - **Investigação de domínios** — explore o histórico digital de sites.
 - **Linha do tempo** — descubra capturas preservadas ao longo dos anos.
-- **Análise histórica** — visualize a primeira e a última captura, o total de registros e os anos ativos.
-- **Nível de abandono** — analise os sinais de inatividade presentes no histórico.
-- **Classificação digital** — identifique domínios como vivos, adormecidos, abandonados ou fantasmas.
+- **Análise histórica** — consulte a primeira e a última captura, o total de registros e os anos ativos.
+- **Nível de abandono** — visualize indicadores baseados no histórico disponível.
+- **Classificação digital** — classifique domínios como vivos, adormecidos, abandonados ou fantasmas.
 
 ### ◈ Tecnologias
 
@@ -30,6 +30,12 @@ Uma plataforma de arqueologia digital que investiga o passado de domínios da in
 - **Backend:** Node.js + Fastify
 - **Dados históricos:** Internet Archive — Wayback Machine
 - **Deploy:** Vercel
+
+### ◈ Desempenho e limitações
+
+A análise depende da disponibilidade e do tempo de resposta da Wayback Machine. Consultas extensas podem ultrapassar o limite de espera da aplicação, enquanto novas tentativas podem responder mais rapidamente.
+
+A causa dessa variação ainda precisa ser investigada. Melhorias no tempo de resposta e na consistência das consultas fazem parte dos desafios técnicos do projeto.
 
 ### ◈ Desenvolvido por
 
